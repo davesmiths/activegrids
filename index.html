@@ -1,0 +1,1675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>ActiveGrids</title>
+
+<style>
+	/* Page Styles */
+	body {background:#ddd;margin:40px;}
+	p {clear:both;margin:10px 0;}
+	
+	/* Quick layout styles using the ActiveGrids classes */
+	.test, .ags {display:inline-block;}
+	.test, .ags {display:block;overflow:hidden;background:#eed;}
+	
+	.test .col,
+	.ooo .col,
+	.ooo2 .col,
+	.ags .col {float:left;background:#dee;}
+	
+	.ielte7 .ooo .col,
+	.ielte7 .ooo2 .col,
+	.ielte7 .ags .col,
+	.ielte7 .test .col
+	{margin-right:-1px;}
+	
+	.ags-1 .col {width:100%;}
+	.ags-2 .col {width:50%;}
+	.ags-3 .col {width:33.3333%;}
+	.ags-4 .col {width:25%;}
+	.ags-5 .col {width:20%;}
+	.ags-6 .col {width:16.6666%;}
+	.ags-7 .col {width:14.2857%;}
+	.ags-8 .col {width:12.5%;}
+	.ags-gt8 .col {width:12.5%;}
+	.ags-lte2 .col {width:100%;}
+
+	.ooo-1 .col {width:100%;}
+	.ooo-2 .col {width:50%;}
+	.ooo-3 .col {width:33.3333%;}
+	.ooo-4 .col {width:25%;}
+	.ooo-5 .col {width:20%;}
+	.ooo-6 .col {width:16.6666%;}
+	.ooo-7 .col {width:14.2857%;}
+	.ooo-8 .col {width:12.5%;}
+	.ooo-gt8 .col {width:12.5%;}
+	.ooo-lte2 .col {width:100%;}
+</style>
+
+<!-- Load ActiveGrids -->
+<script type="text/javascript" src="activegrids.src.js"></script>
+
+<script type="text/javascript">
+
+	// Call ActiveGrids
+//	activeGrids({find: '.ags'});
+	activeGrids({minWidth:false, find: '.ooo', customClass: 'ooo', width: 320});
+//	activeGrids({minWidth:true, find: '.ooo2', customClass: 'ooo', width: 320});
+	//activeGrids({find: '.test', customClass: 'test', width: 160, jquery: 'http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js'});
+//	activeGrids({find: '.test',  width: 160});
+	
+	// pre: good for when including activegrids as part of a plugin
+
+</script>
+
+<!-- Load jQuery and apply ActiveGrids to the resize event -->
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script type="text/javascript">
+	/**/
+	//$(window).on('resize', activeGrids);
+	
+	/*
+	Testing the width of a column does not go below set width for minWidth and not above for maxWidth
+	Do not do $(window).on('resize', function() {
+		activeGrids();
+	});
+	Do do $(window).on('resize', function(e) {
+		activeGrids(e);
+	});
+	
+	$(function() {
+		var col = $('.ooo2 .col:first');
+		
+		var doit = function() {
+			$('.output').html(col.width());
+			setTimeout(doit, 100);
+		};
+		
+		setTimeout(doit, 100);
+	});
+	/**/
+</script>
+
+</head>
+<body>
+<h1>Active Grids</h1>
+<p>JavaScript, no dependencies except when polyfilling</p>
+<p>2012 March 22, updated 2012 June 18</p>
+<p>Example here: ACTIVEGRIDS, where each letter has a block</p>
+<p>What it does, it takes this:</p>
+<pre>&lt;div class=&quot;ags&quot;&gt;
+	&lt;div class=&quot;col&quot;&gt;
+	&lt;div class=&quot;col&quot;&gt;
+&lt;/div&gt;
+</pre>
+<p>and makes it</p>
+<pre>&lt;div class=&quot;ags ags-gt1 ags-gt2 ags-gt3 ags-4 ags-lt5 ags-lt6 ags-lt7 ags-lt8 ags-lt9 ags-lt10 ags-lt11 ags-lt12&quot;&gt;
+	&lt;div class=&quot;col&quot;&gt;
+	&lt;div class=&quot;col&quot;&gt;
+&lt;/div&gt;
+</pre>
+<p class="output">asdasd</p>
+
+<div class="ooo">
+	<div class="col">a</div>
+    <div class="col">c</div>
+    <div class="col">t</div>
+    <div class="col">i</div>
+    <div class="col">v</div>
+    <div class="col">e</div>
+    <div class="col">g</div>
+    <div class="col">r</div>
+    <div class="col">i</div>
+    <div class="col">d</div>
+    <div class="col">s</div>
+</div>
+<div class="ooo2">
+	<div class="col">a</div>
+    <div class="col">c</div>
+    <div class="col">t</div>
+    <div class="col">i</div>
+    <div class="col">v</div>
+    <div class="col">e</div>
+    <div class="col">g</div>
+    <div class="col">r</div>
+    <div class="col">i</div>
+    <div class="col">d</div>
+    <div class="col">s</div>
+</div>
+---
+<div class="ags">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d
+    
+        <div class="ags">
+            <div class="col">ia</div>
+            <div class="col">ib</div>
+            <div class="col">ic</div>
+            <div class="col">id</div>
+            <div class="col">ie</div>
+            <div class="col">if</div>
+            <div class="col">ig</div>
+            <div class="col">ih</div>
+        </div>
+    </div>
+</div>
+<div class="ags">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d</div>
+    <div class="col">e</div>
+    <div class="col">f</div>
+    <div class="col">g</div>
+    <div class="col">h</div>
+</div>
+---
+<div class="test">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d
+    
+        <div class="ags">
+            <div class="col">ia</div>
+            <div class="col">ib</div>
+            <div class="col">ic</div>
+            <div class="col">id</div>
+            <div class="col">ie</div>
+            <div class="col">if</div>
+            <div class="col">ig</div>
+            <div class="col">ih</div>
+        </div>
+    </div>
+</div>
+<div class="ags">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d</div>
+    <div class="col">e</div>
+    <div class="col">f</div>
+    <div class="col">g</div>
+    <div class="col">h</div>
+</div>
+---
+<div class="test">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d
+    
+        <div class="ags">
+            <div class="col">ia</div>
+            <div class="col">ib</div>
+            <div class="col">ic</div>
+            <div class="col">id</div>
+            <div class="col">ie</div>
+            <div class="col">if</div>
+            <div class="col">ig</div>
+            <div class="col">ih</div>
+        </div>
+    </div>
+</div>
+<div class="ags">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d</div>
+    <div class="col">e</div>
+    <div class="col">f</div>
+    <div class="col">g</div>
+    <div class="col">h</div>
+</div>
+---
+<div class="test">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d
+    
+        <div class="ags">
+            <div class="col">ia</div>
+            <div class="col">ib</div>
+            <div class="col">ic</div>
+            <div class="col">id</div>
+            <div class="col">ie</div>
+            <div class="col">if</div>
+            <div class="col">ig</div>
+            <div class="col">ih</div>
+        </div>
+    </div>
+</div>
+<div class="ags">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d</div>
+    <div class="col">e</div>
+    <div class="col">f</div>
+    <div class="col">g</div>
+    <div class="col">h</div>
+</div>
+---
+<div class="test">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d
+    
+        <div class="ags">
+            <div class="col">ia</div>
+            <div class="col">ib</div>
+            <div class="col">ic</div>
+            <div class="col">id</div>
+            <div class="col">ie</div>
+            <div class="col">if</div>
+            <div class="col">ig</div>
+            <div class="col">ih</div>
+        </div>
+    </div>
+</div>
+<div class="ags">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d</div>
+    <div class="col">e</div>
+    <div class="col">f</div>
+    <div class="col">g</div>
+    <div class="col">h</div>
+</div>
+---
+<div class="test">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d
+    
+        <div class="ags">
+            <div class="col">ia</div>
+            <div class="col">ib</div>
+            <div class="col">ic</div>
+            <div class="col">id</div>
+            <div class="col">ie</div>
+            <div class="col">if</div>
+            <div class="col">ig</div>
+            <div class="col">ih</div>
+        </div>
+    </div>
+</div>
+<div class="ags">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d</div>
+    <div class="col">e</div>
+    <div class="col">f</div>
+    <div class="col">g</div>
+    <div class="col">h</div>
+</div>
+---
+<div class="test">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d
+    
+        <div class="ags">
+            <div class="col">ia</div>
+            <div class="col">ib</div>
+            <div class="col">ic</div>
+            <div class="col">id</div>
+            <div class="col">ie</div>
+            <div class="col">if</div>
+            <div class="col">ig</div>
+            <div class="col">ih</div>
+        </div>
+    </div>
+</div>
+<div class="ags">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d</div>
+    <div class="col">e</div>
+    <div class="col">f</div>
+    <div class="col">g</div>
+    <div class="col">h</div>
+</div>
+---
+<div class="test">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d
+    
+        <div class="ags">
+            <div class="col">ia</div>
+            <div class="col">ib</div>
+            <div class="col">ic</div>
+            <div class="col">id</div>
+            <div class="col">ie</div>
+            <div class="col">if</div>
+            <div class="col">ig</div>
+            <div class="col">ih</div>
+        </div>
+    </div>
+</div>
+<div class="ags">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d</div>
+    <div class="col">e</div>
+    <div class="col">f</div>
+    <div class="col">g</div>
+    <div class="col">h</div>
+</div>
+---
+<div class="test">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d
+    
+        <div class="ags">
+            <div class="col">ia</div>
+            <div class="col">ib</div>
+            <div class="col">ic</div>
+            <div class="col">id</div>
+            <div class="col">ie</div>
+            <div class="col">if</div>
+            <div class="col">ig</div>
+            <div class="col">ih</div>
+        </div>
+    </div>
+</div>
+<div class="ags">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d</div>
+    <div class="col">e</div>
+    <div class="col">f</div>
+    <div class="col">g</div>
+    <div class="col">h</div>
+</div>
+---
+<div class="test">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d
+    
+        <div class="ags">
+            <div class="col">ia</div>
+            <div class="col">ib</div>
+            <div class="col">ic</div>
+            <div class="col">id</div>
+            <div class="col">ie</div>
+            <div class="col">if</div>
+            <div class="col">ig</div>
+            <div class="col">ih</div>
+        </div>
+    </div>
+</div>
+<div class="ags">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d</div>
+    <div class="col">e</div>
+    <div class="col">f</div>
+    <div class="col">g</div>
+    <div class="col">h</div>
+</div>
+---
+<div class="test">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d
+    
+        <div class="ags">
+            <div class="col">ia</div>
+            <div class="col">ib</div>
+            <div class="col">ic</div>
+            <div class="col">id</div>
+            <div class="col">ie</div>
+            <div class="col">if</div>
+            <div class="col">ig</div>
+            <div class="col">ih</div>
+        </div>
+    </div>
+</div>
+<div class="ags">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d</div>
+    <div class="col">e</div>
+    <div class="col">f</div>
+    <div class="col">g</div>
+    <div class="col">h</div>
+</div>
+---
+<div class="test">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d
+    
+        <div class="ags">
+            <div class="col">ia</div>
+            <div class="col">ib</div>
+            <div class="col">ic</div>
+            <div class="col">id</div>
+            <div class="col">ie</div>
+            <div class="col">if</div>
+            <div class="col">ig</div>
+            <div class="col">ih</div>
+        </div>
+    </div>
+</div>
+<div class="ags">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d</div>
+    <div class="col">e</div>
+    <div class="col">f</div>
+    <div class="col">g</div>
+    <div class="col">h</div>
+</div>
+---
+<div class="test">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d
+    
+        <div class="ags">
+            <div class="col">ia</div>
+            <div class="col">ib</div>
+            <div class="col">ic</div>
+            <div class="col">id</div>
+            <div class="col">ie</div>
+            <div class="col">if</div>
+            <div class="col">ig</div>
+            <div class="col">ih</div>
+        </div>
+    </div>
+</div>
+<div class="ags">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d</div>
+    <div class="col">e</div>
+    <div class="col">f</div>
+    <div class="col">g</div>
+    <div class="col">h</div>
+</div>
+---
+<div class="test">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d
+    
+        <div class="ags">
+            <div class="col">ia</div>
+            <div class="col">ib</div>
+            <div class="col">ic</div>
+            <div class="col">id</div>
+            <div class="col">ie</div>
+            <div class="col">if</div>
+            <div class="col">ig</div>
+            <div class="col">ih</div>
+        </div>
+    </div>
+</div>
+<div class="ags">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d</div>
+    <div class="col">e</div>
+    <div class="col">f</div>
+    <div class="col">g</div>
+    <div class="col">h</div>
+</div>
+---
+<div class="test">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d
+    
+        <div class="ags">
+            <div class="col">ia</div>
+            <div class="col">ib</div>
+            <div class="col">ic</div>
+            <div class="col">id</div>
+            <div class="col">ie</div>
+            <div class="col">if</div>
+            <div class="col">ig</div>
+            <div class="col">ih</div>
+        </div>
+    </div>
+</div>
+<div class="ags">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d</div>
+    <div class="col">e</div>
+    <div class="col">f</div>
+    <div class="col">g</div>
+    <div class="col">h</div>
+</div>
+---
+<div class="test">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d
+    
+        <div class="ags">
+            <div class="col">ia</div>
+            <div class="col">ib</div>
+            <div class="col">ic</div>
+            <div class="col">id</div>
+            <div class="col">ie</div>
+            <div class="col">if</div>
+            <div class="col">ig</div>
+            <div class="col">ih</div>
+        </div>
+    </div>
+</div>
+<div class="ags">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d</div>
+    <div class="col">e</div>
+    <div class="col">f</div>
+    <div class="col">g</div>
+    <div class="col">h</div>
+</div>
+---
+<div class="test">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d
+    
+        <div class="ags">
+            <div class="col">ia</div>
+            <div class="col">ib</div>
+            <div class="col">ic</div>
+            <div class="col">id</div>
+            <div class="col">ie</div>
+            <div class="col">if</div>
+            <div class="col">ig</div>
+            <div class="col">ih</div>
+        </div>
+    </div>
+</div>
+<div class="ags">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d</div>
+    <div class="col">e</div>
+    <div class="col">f</div>
+    <div class="col">g</div>
+    <div class="col">h</div>
+</div>
+---
+<div class="test">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d
+    
+        <div class="ags">
+            <div class="col">ia</div>
+            <div class="col">ib</div>
+            <div class="col">ic</div>
+            <div class="col">id</div>
+            <div class="col">ie</div>
+            <div class="col">if</div>
+            <div class="col">ig</div>
+            <div class="col">ih</div>
+        </div>
+    </div>
+</div>
+<div class="ags">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d</div>
+    <div class="col">e</div>
+    <div class="col">f</div>
+    <div class="col">g</div>
+    <div class="col">h</div>
+</div>
+---
+<div class="test">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d
+    
+        <div class="ags">
+            <div class="col">ia</div>
+            <div class="col">ib</div>
+            <div class="col">ic</div>
+            <div class="col">id</div>
+            <div class="col">ie</div>
+            <div class="col">if</div>
+            <div class="col">ig</div>
+            <div class="col">ih</div>
+        </div>
+    </div>
+</div>
+<div class="ags">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d</div>
+    <div class="col">e</div>
+    <div class="col">f</div>
+    <div class="col">g</div>
+    <div class="col">h</div>
+</div>
+---
+<div class="test">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d
+    
+        <div class="ags">
+            <div class="col">ia</div>
+            <div class="col">ib</div>
+            <div class="col">ic</div>
+            <div class="col">id</div>
+            <div class="col">ie</div>
+            <div class="col">if</div>
+            <div class="col">ig</div>
+            <div class="col">ih</div>
+        </div>
+    </div>
+</div>
+<div class="ags">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d</div>
+    <div class="col">e</div>
+    <div class="col">f</div>
+    <div class="col">g</div>
+    <div class="col">h</div>
+</div>
+---
+<div class="test">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d
+    
+        <div class="ags">
+            <div class="col">ia</div>
+            <div class="col">ib</div>
+            <div class="col">ic</div>
+            <div class="col">id</div>
+            <div class="col">ie</div>
+            <div class="col">if</div>
+            <div class="col">ig</div>
+            <div class="col">ih</div>
+        </div>
+    </div>
+</div>
+<div class="ags">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d</div>
+    <div class="col">e</div>
+    <div class="col">f</div>
+    <div class="col">g</div>
+    <div class="col">h</div>
+</div>
+---
+<div class="test">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d
+    
+        <div class="ags">
+            <div class="col">ia</div>
+            <div class="col">ib</div>
+            <div class="col">ic</div>
+            <div class="col">id</div>
+            <div class="col">ie</div>
+            <div class="col">if</div>
+            <div class="col">ig</div>
+            <div class="col">ih</div>
+        </div>
+    </div>
+</div>
+<div class="ags">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d</div>
+    <div class="col">e</div>
+    <div class="col">f</div>
+    <div class="col">g</div>
+    <div class="col">h</div>
+</div>
+---
+<div class="test">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d
+    
+        <div class="ags">
+            <div class="col">ia</div>
+            <div class="col">ib</div>
+            <div class="col">ic</div>
+            <div class="col">id</div>
+            <div class="col">ie</div>
+            <div class="col">if</div>
+            <div class="col">ig</div>
+            <div class="col">ih</div>
+        </div>
+    </div>
+</div>
+<div class="ags">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d</div>
+    <div class="col">e</div>
+    <div class="col">f</div>
+    <div class="col">g</div>
+    <div class="col">h</div>
+</div>
+---
+<div class="test">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d
+    
+        <div class="ags">
+            <div class="col">ia</div>
+            <div class="col">ib</div>
+            <div class="col">ic</div>
+            <div class="col">id</div>
+            <div class="col">ie</div>
+            <div class="col">if</div>
+            <div class="col">ig</div>
+            <div class="col">ih</div>
+        </div>
+    </div>
+</div>
+<div class="ags">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d</div>
+    <div class="col">e</div>
+    <div class="col">f</div>
+    <div class="col">g</div>
+    <div class="col">h</div>
+</div>
+---
+<div class="test">
+    <div class="col">a</div>
+
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d
+    
+        <div class="ags">
+            <div class="col">ia</div>
+            <div class="col">ib</div>
+            <div class="col">ic</div>
+            <div class="col">id</div>
+            <div class="col">ie</div>
+            <div class="col">if</div>
+            <div class="col">ig</div>
+            <div class="col">ih</div>
+        </div>
+    </div>
+</div>
+<div class="ags">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d</div>
+    <div class="col">e</div>
+    <div class="col">f</div>
+    <div class="col">g</div>
+    <div class="col">h</div>
+</div>
+---
+<div class="test">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d
+    
+        <div class="ags">
+            <div class="col">ia</div>
+            <div class="col">ib</div>
+            <div class="col">ic</div>
+            <div class="col">id</div>
+            <div class="col">ie</div>
+            <div class="col">if</div>
+            <div class="col">ig</div>
+            <div class="col">ih</div>
+        </div>
+    </div>
+</div>
+<div class="ags">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d</div>
+    <div class="col">e</div>
+    <div class="col">f</div>
+    <div class="col">g</div>
+    <div class="col">h</div>
+</div>
+---
+<div class="test">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d
+    
+        <div class="ags">
+            <div class="col">ia</div>
+            <div class="col">ib</div>
+            <div class="col">ic</div>
+            <div class="col">id</div>
+            <div class="col">ie</div>
+            <div class="col">if</div>
+            <div class="col">ig</div>
+            <div class="col">ih</div>
+        </div>
+    </div>
+</div>
+<div class="ags">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d</div>
+    <div class="col">e</div>
+    <div class="col">f</div>
+    <div class="col">g</div>
+    <div class="col">h</div>
+</div>
+---
+<div class="test">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d
+    
+        <div class="ags">
+            <div class="col">ia</div>
+            <div class="col">ib</div>
+            <div class="col">ic</div>
+            <div class="col">id</div>
+            <div class="col">ie</div>
+            <div class="col">if</div>
+            <div class="col">ig</div>
+            <div class="col">ih</div>
+        </div>
+    </div>
+</div>
+<div class="ags">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d</div>
+    <div class="col">e</div>
+    <div class="col">f</div>
+    <div class="col">g</div>
+    <div class="col">h</div>
+</div>
+---
+<div class="test">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d
+    
+        <div class="ags">
+            <div class="col">ia</div>
+            <div class="col">ib</div>
+            <div class="col">ic</div>
+            <div class="col">id</div>
+            <div class="col">ie</div>
+            <div class="col">if</div>
+            <div class="col">ig</div>
+            <div class="col">ih</div>
+        </div>
+    </div>
+</div>
+<div class="ags">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d</div>
+    <div class="col">e</div>
+    <div class="col">f</div>
+    <div class="col">g</div>
+    <div class="col">h</div>
+</div>
+---
+<div class="test">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d
+    
+        <div class="ags">
+            <div class="col">ia</div>
+            <div class="col">ib</div>
+            <div class="col">ic</div>
+            <div class="col">id</div>
+            <div class="col">ie</div>
+            <div class="col">if</div>
+            <div class="col">ig</div>
+            <div class="col">ih</div>
+        </div>
+    </div>
+</div>
+<div class="ags">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d</div>
+    <div class="col">e</div>
+    <div class="col">f</div>
+    <div class="col">g</div>
+    <div class="col">h</div>
+</div>
+---
+<div class="test">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d
+    
+        <div class="ags">
+            <div class="col">ia</div>
+            <div class="col">ib</div>
+            <div class="col">ic</div>
+            <div class="col">id</div>
+            <div class="col">ie</div>
+            <div class="col">if</div>
+            <div class="col">ig</div>
+            <div class="col">ih</div>
+        </div>
+    </div>
+</div>
+<div class="ags">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d</div>
+    <div class="col">e</div>
+    <div class="col">f</div>
+    <div class="col">g</div>
+    <div class="col">h</div>
+</div>
+---
+<div class="test">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d
+    
+        <div class="ags">
+            <div class="col">ia</div>
+            <div class="col">ib</div>
+            <div class="col">ic</div>
+            <div class="col">id</div>
+            <div class="col">ie</div>
+            <div class="col">if</div>
+            <div class="col">ig</div>
+            <div class="col">ih</div>
+        </div>
+    </div>
+</div>
+<div class="ags">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d</div>
+    <div class="col">e</div>
+    <div class="col">f</div>
+    <div class="col">g</div>
+    <div class="col">h</div>
+</div>
+---
+<div class="test">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d
+    
+        <div class="ags">
+            <div class="col">ia</div>
+            <div class="col">ib</div>
+            <div class="col">ic</div>
+            <div class="col">id</div>
+            <div class="col">ie</div>
+            <div class="col">if</div>
+            <div class="col">ig</div>
+            <div class="col">ih</div>
+        </div>
+    </div>
+</div>
+<div class="ags">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d</div>
+    <div class="col">e</div>
+    <div class="col">f</div>
+    <div class="col">g</div>
+    <div class="col">h</div>
+</div>
+---
+<div class="test">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d
+    
+        <div class="ags">
+            <div class="col">ia</div>
+            <div class="col">ib</div>
+            <div class="col">ic</div>
+            <div class="col">id</div>
+            <div class="col">ie</div>
+            <div class="col">if</div>
+            <div class="col">ig</div>
+            <div class="col">ih</div>
+        </div>
+    </div>
+</div>
+<div class="ags">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d</div>
+    <div class="col">e</div>
+    <div class="col">f</div>
+
+
+    <div class="col">g</div>
+    <div class="col">h</div>
+</div>
+---
+<div class="test">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d
+    
+        <div class="ags">
+            <div class="col">ia</div>
+            <div class="col">ib</div>
+            <div class="col">ic</div>
+            <div class="col">id</div>
+            <div class="col">ie</div>
+            <div class="col">if</div>
+            <div class="col">ig</div>
+            <div class="col">ih</div>
+        </div>
+    </div>
+</div>
+<div class="ags">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d</div>
+    <div class="col">e</div>
+    <div class="col">f</div>
+    <div class="col">g</div>
+    <div class="col">h</div>
+</div>
+---
+<div class="test">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d
+    
+        <div class="ags">
+            <div class="col">ia</div>
+            <div class="col">ib</div>
+            <div class="col">ic</div>
+            <div class="col">id</div>
+            <div class="col">ie</div>
+            <div class="col">if</div>
+            <div class="col">ig</div>
+            <div class="col">ih</div>
+        </div>
+    </div>
+</div>
+<div class="ags">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d</div>
+    <div class="col">e</div>
+    <div class="col">f</div>
+    <div class="col">g</div>
+    <div class="col">h</div>
+</div>
+---
+<div class="test">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d
+    
+        <div class="ags">
+            <div class="col">ia</div>
+            <div class="col">ib</div>
+            <div class="col">ic</div>
+            <div class="col">id</div>
+            <div class="col">ie</div>
+            <div class="col">if</div>
+            <div class="col">ig</div>
+            <div class="col">ih</div>
+        </div>
+    </div>
+</div>
+<div class="ags">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d</div>
+    <div class="col">e</div>
+    <div class="col">f</div>
+    <div class="col">g</div>
+    <div class="col">h</div>
+</div>
+---
+<div class="test">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d
+    
+        <div class="ags">
+            <div class="col">ia</div>
+            <div class="col">ib</div>
+            <div class="col">ic</div>
+            <div class="col">id</div>
+            <div class="col">ie</div>
+            <div class="col">if</div>
+            <div class="col">ig</div>
+            <div class="col">ih</div>
+        </div>
+    </div>
+</div>
+<div class="ags">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d</div>
+    <div class="col">e</div>
+    <div class="col">f</div>
+    <div class="col">g</div>
+    <div class="col">h</div>
+</div>
+---
+<div class="test">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d
+    
+        <div class="ags">
+            <div class="col">ia</div>
+            <div class="col">ib</div>
+            <div class="col">ic</div>
+            <div class="col">id</div>
+            <div class="col">ie</div>
+            <div class="col">if</div>
+            <div class="col">ig</div>
+            <div class="col">ih</div>
+        </div>
+    </div>
+</div>
+<div class="ags">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d</div>
+    <div class="col">e</div>
+    <div class="col">f</div>
+    <div class="col">g</div>
+    <div class="col">h</div>
+</div>
+---
+<div class="test">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d
+    
+        <div class="ags">
+            <div class="col">ia</div>
+            <div class="col">ib</div>
+            <div class="col">ic</div>
+            <div class="col">id</div>
+            <div class="col">ie</div>
+            <div class="col">if</div>
+            <div class="col">ig</div>
+            <div class="col">ih</div>
+        </div>
+    </div>
+</div>
+<div class="ags">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d</div>
+    <div class="col">e</div>
+    <div class="col">f</div>
+    <div class="col">g</div>
+    <div class="col">h</div>
+</div>
+---
+<div class="test">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d
+    
+        <div class="ags">
+            <div class="col">ia</div>
+            <div class="col">ib</div>
+            <div class="col">ic</div>
+            <div class="col">id</div>
+            <div class="col">ie</div>
+            <div class="col">if</div>
+            <div class="col">ig</div>
+            <div class="col">ih</div>
+        </div>
+    </div>
+</div>
+<div class="ags">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d</div>
+    <div class="col">e</div>
+    <div class="col">f</div>
+    <div class="col">g</div>
+    <div class="col">h</div>
+</div>
+---
+<div class="test">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d
+    
+        <div class="ags">
+            <div class="col">ia</div>
+            <div class="col">ib</div>
+            <div class="col">ic</div>
+            <div class="col">id</div>
+            <div class="col">ie</div>
+            <div class="col">if</div>
+            <div class="col">ig</div>
+            <div class="col">ih</div>
+        </div>
+    </div>
+</div>
+<div class="ags">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d</div>
+    <div class="col">e</div>
+    <div class="col">f</div>
+    <div class="col">g</div>
+    <div class="col">h</div>
+</div>
+---
+<div class="test">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d
+    
+        <div class="ags">
+            <div class="col">ia</div>
+            <div class="col">ib</div>
+            <div class="col">ic</div>
+            <div class="col">id</div>
+            <div class="col">ie</div>
+            <div class="col">if</div>
+            <div class="col">ig</div>
+            <div class="col">ih</div>
+        </div>
+    </div>
+</div>
+<div class="ags">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d</div>
+    <div class="col">e</div>
+    <div class="col">f</div>
+    <div class="col">g</div>
+    <div class="col">h</div>
+</div>
+---
+<div class="test">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d
+    
+        <div class="ags">
+            <div class="col">ia</div>
+            <div class="col">ib</div>
+            <div class="col">ic</div>
+            <div class="col">id</div>
+            <div class="col">ie</div>
+            <div class="col">if</div>
+            <div class="col">ig</div>
+            <div class="col">ih</div>
+        </div>
+    </div>
+</div>
+<div class="ags">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d</div>
+    <div class="col">e</div>
+    <div class="col">f</div>
+    <div class="col">g</div>
+    <div class="col">h</div>
+</div>
+---
+<div class="test">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d
+    
+        <div class="ags">
+            <div class="col">ia</div>
+            <div class="col">ib</div>
+            <div class="col">ic</div>
+            <div class="col">id</div>
+            <div class="col">ie</div>
+            <div class="col">if</div>
+            <div class="col">ig</div>
+            <div class="col">ih</div>
+        </div>
+    </div>
+</div>
+<div class="ags">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d</div>
+    <div class="col">e</div>
+    <div class="col">f</div>
+    <div class="col">g</div>
+    <div class="col">h</div>
+</div>
+---
+<div class="test">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d
+    
+        <div class="ags">
+            <div class="col">ia</div>
+            <div class="col">ib</div>
+            <div class="col">ic</div>
+            <div class="col">id</div>
+            <div class="col">ie</div>
+            <div class="col">if</div>
+            <div class="col">ig</div>
+            <div class="col">ih</div>
+        </div>
+    </div>
+</div>
+<div class="ags">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d</div>
+    <div class="col">e</div>
+    <div class="col">f</div>
+    <div class="col">g</div>
+    <div class="col">h</div>
+</div>
+---
+<div class="test">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d
+    
+        <div class="ags">
+            <div class="col">ia</div>
+            <div class="col">ib</div>
+            <div class="col">ic</div>
+            <div class="col">id</div>
+            <div class="col">ie</div>
+            <div class="col">if</div>
+            <div class="col">ig</div>
+            <div class="col">ih</div>
+        </div>
+    </div>
+</div>
+<div class="ags">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d</div>
+    <div class="col">e</div>
+    <div class="col">f</div>
+    <div class="col">g</div>
+    <div class="col">h</div>
+</div>
+---
+<div class="test">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d
+    
+        <div class="ags">
+            <div class="col">ia</div>
+            <div class="col">ib</div>
+            <div class="col">ic</div>
+            <div class="col">id</div>
+            <div class="col">ie</div>
+            <div class="col">if</div>
+            <div class="col">ig</div>
+            <div class="col">ih</div>
+        </div>
+    </div>
+</div>
+<div class="ags">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d</div>
+    <div class="col">e</div>
+    <div class="col">f</div>
+    <div class="col">g</div>
+    <div class="col">h</div>
+</div>
+---
+<div class="test">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d
+    
+        <div class="ags">
+            <div class="col">ia</div>
+            <div class="col">ib</div>
+            <div class="col">ic</div>
+            <div class="col">id</div>
+            <div class="col">ie</div>
+            <div class="col">if</div>
+            <div class="col">ig</div>
+            <div class="col">ih</div>
+        </div>
+    </div>
+</div>
+<div class="ags">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d</div>
+    <div class="col">e</div>
+    <div class="col">f</div>
+    <div class="col">g</div>
+    <div class="col">h</div>
+</div>
+---
+<div class="test">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d
+    
+        <div class="ags">
+            <div class="col">ia</div>
+            <div class="col">ib</div>
+            <div class="col">ic</div>
+            <div class="col">id</div>
+            <div class="col">ie</div>
+            <div class="col">if</div>
+            <div class="col">ig</div>
+            <div class="col">ih</div>
+        </div>
+    </div>
+</div>
+<div class="ags">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d</div>
+    <div class="col">e</div>
+    <div class="col">f</div>
+    <div class="col">g</div>
+    <div class="col">h</div>
+</div>
+---
+<div class="test">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d
+    
+        <div class="ags">
+            <div class="col">ia</div>
+            <div class="col">ib</div>
+            <div class="col">ic</div>
+            <div class="col">id</div>
+            <div class="col">ie</div>
+            <div class="col">if</div>
+            <div class="col">ig</div>
+            <div class="col">ih</div>
+        </div>
+    </div>
+</div>
+<div class="ags">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d</div>
+    <div class="col">e</div>
+    <div class="col">f</div>
+    <div class="col">g</div>
+    <div class="col">h</div>
+</div>
+---
+<div class="test">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d
+    
+        <div class="ags">
+            <div class="col">ia</div>
+            <div class="col">ib</div>
+            <div class="col">ic</div>
+            <div class="col">id</div>
+            <div class="col">ie</div>
+            <div class="col">if</div>
+            <div class="col">ig</div>
+            <div class="col">ih</div>
+        </div>
+    </div>
+</div>
+<div class="ags">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d</div>
+    <div class="col">e</div>
+    <div class="col">f</div>
+    <div class="col">g</div>
+    <div class="col">h</div>
+</div>
+---
+<div class="test">
+    <div class="col">a</div>
+    <div class="col">b</div>
+    <div class="col">c</div>
+    <div class="col">d
+    
+        <div class="ags">
+            <div class="col">ia</div>
+            <div class="col">ib</div>
+            <div class="col">ic</div>
+            <div class="col">id</div>
+            <div class="col">ie</div>
+            <div class="col">if</div>
+            <div class="col">ig</div>
+            <div class="col">ih</div>
+        </div>
+    </div>
+</div>
+<p>Output 1
+<span class="output"></span>
+</p>
+
+</body>
+</html>
