@@ -1,6 +1,6 @@
 # ActiveGrids
 
-**A way to create grids based on pixel width columns yet make them responsive and fluid**
+**A way to create pixel based grids yet make them responsive and fluid**
 
 The ActiveGrids default is to work to a grid of 60px min-width columns and dynamically add classes to .ags elements 
 dependent on their width, as the page loads. With your favourite JS library bind ActiveGrids to the window 
